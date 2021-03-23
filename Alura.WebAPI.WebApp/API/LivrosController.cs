@@ -22,7 +22,7 @@ namespace Alura.WebAPI.WebApp.API
         [HttpGet]
         public IActionResult ListaDeLivros()
         {
-            var lista = _repo.All.Select(l => l.ToModel()).ToList();
+            var lista = _repo.All.Select(l => l.ToApi()).ToList();
 
             return Ok(lista);
         }
@@ -36,7 +36,7 @@ namespace Alura.WebAPI.WebApp.API
                 return NotFound();
             }
 
-            return Ok(model.ToModel());
+            return Ok(model.ToApi());
         }
 
         [HttpGet("{id}/capa")]
