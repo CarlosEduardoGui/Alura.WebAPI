@@ -9,14 +9,15 @@ using System.Threading.Tasks;
 
 namespace Alura.ListaLeitura.Api.Formatters
 {
-    public class LivroCSVFormatter : TextOutputFormatter
+    public class LivroCsvFormatter : TextOutputFormatter
     {
-        public LivroCSVFormatter()
+
+        public LivroCsvFormatter()
         {
-            var textcsvMediaType = MediaTypeHeaderValue.Parse("text/csv");
-            var appcsvMediaType = MediaTypeHeaderValue.Parse("application/csv");
-            SupportedMediaTypes.Add(textcsvMediaType);
-            SupportedMediaTypes.Add(appcsvMediaType);
+            var textCsvMediaType = MediaTypeHeaderValue.Parse("text/csv");
+            var appCsvMediaType = MediaTypeHeaderValue.Parse("application/csv");
+            SupportedMediaTypes.Add(textCsvMediaType);
+            SupportedMediaTypes.Add(appCsvMediaType);
             SupportedEncodings.Add(Encoding.UTF8);
         }
 
@@ -27,21 +28,19 @@ namespace Alura.ListaLeitura.Api.Formatters
 
         public override Task WriteResponseBodyAsync(OutputFormatterWriteContext context, Encoding selectedEncoding)
         {
-            var lLivroEmVcs = "";
+            var livroEmCsv = "";
 
             if (context.Object is LivroApi)
             {
                 var livro = context.Object as LivroApi;
 
-                lLivroEmVcs = $"{livro.Titulo};{livro.Subtitulo};{livro.Autor};{livro.Lista}";
+                livroEmCsv = $"{livro.Titulo};{livro.Subtitulo};{livro.Autor};{livro.Lista}";
             }
 
-            using (var escritor = context.WriterFactory(
-            context.HttpContext.Request.Body, selectedEncoding))
+            using (var escritor = context.WriterFactory(context.HttpContext.Response.Body, selectedEncoding))
             {
-                return escritor.WriteAsync(lLivroEmVcs);
-            }
-
+                return escritor.WriteAsync(livroEmCsv);
+            } //escritor.Close()
         }
     }
 }

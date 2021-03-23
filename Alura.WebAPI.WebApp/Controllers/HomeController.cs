@@ -18,11 +18,10 @@ namespace Alura.ListaLeitura.WebApp.Controllers
             _repo = repository;
         }
 
-        private IEnumerable<LivroApi> ListaDoTipo(TipoListaLeitura tipo)
+        private IEnumerable<Livro> ListaDoTipo(TipoListaLeitura tipo)
         {
             return _repo.All
                 .Where(l => l.Lista == tipo)
-                .Select(l => l.ToApi())
                 .ToList();
         }
 

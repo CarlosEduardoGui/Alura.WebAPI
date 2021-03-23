@@ -1,16 +1,16 @@
-﻿using Alura.ListaLeitura.Modelos;
-using Alura.ListaLeitura.Persistencia;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Alura.ListaLeitura.Modelos;
+using Alura.ListaLeitura.Persistencia;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Lista = Alura.ListaLeitura.Modelos.ListaLeitura;
 
 namespace Alura.ListaLeitura.Api.Controllers
 {
-    [Authorize]
+    //[Authorize]
     [ApiController]
     [Route("api/[controller]")]
     public class ListasLeituraController : ControllerBase
@@ -22,23 +22,25 @@ namespace Alura.ListaLeitura.Api.Controllers
             _repo = repository;
         }
 
-
         private Lista CriaLista(TipoListaLeitura tipo)
         {
             return new Lista
             {
                 Tipo = tipo.ParaString(),
-                Livros = _repo.All.Where(l => l.Lista == tipo).Select(l => l.ToApi()).ToList()
+                Livros = _repo.All
+                    .Where(l => l.Lista == tipo)
+                    .Select(l => l.ToApi())
+                    .ToList()
             };
         }
 
+        [HttpGet]
         public IActionResult TodasListas()
         {
-            Lista paraler = CriaLista(TipoListaLeitura.ParaLer);
+            Lista paraLer = CriaLista(TipoListaLeitura.ParaLer);
             Lista lendo = CriaLista(TipoListaLeitura.Lendo);
             Lista lidos = CriaLista(TipoListaLeitura.Lidos);
-            var colecao = new List<Lista> { paraler, lendo, lidos };
-
+            var colecao = new List<Lista> { paraLer, lendo, lidos };
             return Ok(colecao);
         }
 

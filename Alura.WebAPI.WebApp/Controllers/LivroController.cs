@@ -3,6 +3,8 @@ using Alura.ListaLeitura.Persistencia;
 using Alura.ListaLeitura.Modelos;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Net.Http;
+using System.Threading.Tasks;
 
 namespace Alura.ListaLeitura.WebApp.Controllers
 {
@@ -35,12 +37,18 @@ namespace Alura.ListaLeitura.WebApp.Controllers
         }
 
         [HttpGet]
-        public IActionResult ImagemCapa(int id)
+        public async Task<IActionResult> ImagemCapa(int id)
         {
-            byte[] img = _repo.All
-                .Where(l => l.Id == id)
-                .Select(l => l.ImagemCapa)
-                .FirstOrDefault();
+            HttpClient httpClient = new HttpClient
+            {
+                BaseAddress = new System.Uri("http://localhost:6000/api/")
+            };
+
+            HttpResponseMessage resposta = await httpClient.GetAsync($"livro/{id}/capa");
+
+            resposta.EnsureSuccessStatusCode();
+
+            byte[] img = await resposta.Content.ReadAsByteArrayAsync();
             if (img != null)
             {
                 return File(img, "image/png");
@@ -49,14 +57,23 @@ namespace Alura.ListaLeitura.WebApp.Controllers
         }
 
         [HttpGet]
-        public IActionResult Detalhes(int id)
+        public async Task<IActionResult> Detalhes(int id)
         {
-            var model = _repo.Find(id);
+            HttpClient httpClient = new HttpClient
+            {
+                BaseAddress = new System.Uri("http://localhost:6000/api/")
+            };
+
+            HttpResponseMessage resposta = await httpClient.GetAsync($"livro/{id}");
+
+            resposta.EnsureSuccessStatusCode();
+
+            var model = await resposta.Content.ReadAsAsync<LivroApi>();
             if (model == null)
             {
                 return NotFound();
             }
-            return View(model.ToModel());
+            return View(model.ToUpload());
         }
 
         [HttpPost]

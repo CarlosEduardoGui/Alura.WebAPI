@@ -9,7 +9,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Alura.WebAPI.WebApp.Formatters;
 using Microsoft.IdentityModel.Tokens;
-using System.Text;
 using System;
 
 namespace Alura.ListaLeitura.WebApp
@@ -48,7 +47,7 @@ namespace Alura.ListaLeitura.WebApp
             services.AddTransient<IRepository<Livro>, RepositorioBaseEF<Livro>>();
 
             services.AddMvc(options => {
-                options.OutputFormatters.Add(new LivroCSVFormatter());
+                options.OutputFormatters.Add(new LivroCsvFormatter());
             }).AddXmlSerializerFormatters();
         }
 
