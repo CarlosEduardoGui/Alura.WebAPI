@@ -41,26 +41,6 @@ namespace Alura.WebAPI.AuthProvider
                 options.Password.RequireLowercase = false;
             }).AddEntityFrameworkStores<AuthDbContext>();
 
-            //services.AddAuthentication(options =>
-            //{
-            //    options.DefaultAuthenticateScheme = "JwtBearer";
-
-            //    options.DefaultChallengeScheme = "JwtBearer";
-            //}).AddJwtBearer("JwtBearer", options =>
-            //{
-            //    options.TokenValidationParameters = new TokenValidationParameters
-            //    {
-            //        ValidateIssuer = true,
-            //        ValidateAudience = true,
-            //        ValidateLifetime = true,
-            //        ValidateIssuerSigningKey = true,
-            //        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("alura-webapi-authentication-valid")),
-            //        ClockSkew = TimeSpan.FromMinutes(5),
-            //        ValidIssuer = "Alura.WebApp",
-            //        ValidAudience = "Postman"
-            //    };
-            //});
-
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
 
