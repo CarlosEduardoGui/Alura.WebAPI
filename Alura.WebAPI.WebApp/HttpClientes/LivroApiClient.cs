@@ -1,5 +1,4 @@
 ﻿using Alura.ListaLeitura.Modelos;
-using Alura.ListaLeitura.Seguranca;
 using Microsoft.AspNetCore.Http;
 using System.Linq;
 using System.Net.Http;

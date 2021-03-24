@@ -1,7 +1,5 @@
 ﻿using Alura.ListaLeitura.Seguranca;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+using Alura.ListaLeitura.WebApp.Models;
 using System.Net.Http;
 using System.Threading.Tasks;
 
@@ -33,6 +31,12 @@ namespace Alura.ListaLeitura.HttpClientes
                 Succeeded = resposta.IsSuccessStatusCode,
                 Token = await resposta.Content.ReadAsStringAsync()
             };
+        }
+
+        public async Task PostRegisterAsync(RegisterViewModel model)
+        {
+            var resposta = await _httpClient.PostAsJsonAsync<RegisterViewModel>("usuarios", model);
+            resposta.EnsureSuccessStatusCode();
         }
     }
 }

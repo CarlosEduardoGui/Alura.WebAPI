@@ -1,12 +1,8 @@
 ﻿using Alura.ListaLeitura.HttpClientes;
-using Alura.ListaLeitura.Modelos;
-using Alura.ListaLeitura.Seguranca;
 using Alura.WebAPI.WebApp.Formatters;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -24,19 +20,6 @@ namespace Alura.ListaLeitura.WebApp
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<AuthDbContext>(options =>
-            {
-                options.UseSqlServer(Configuration.GetConnectionString("AuthDB"));
-            });
-
-            //services.AddIdentity<Usuario, IdentityRole>(options =>
-            //{
-            //    options.Password.RequiredLength = 3;
-            //    options.Password.RequireNonAlphanumeric = false;
-            //    options.Password.RequireUppercase = false;
-            //    options.Password.RequireLowercase = false;
-            //}).AddEntityFrameworkStores<AuthDbContext>();
-
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(options =>
                 {
