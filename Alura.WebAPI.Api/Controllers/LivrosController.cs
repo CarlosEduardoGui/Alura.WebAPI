@@ -11,6 +11,7 @@ namespace Alura.ListaLeitura.Api.Controllers
     [Authorize]
     [ApiController]
     [ApiVersion("2.0")]
+    [ApiExplorerSettings(GroupName = "v1")]
     [Route("api/v{version:apiVersion}/[controller]")]
     public class LivrosController : ControllerBase
     {
@@ -36,6 +37,9 @@ namespace Alura.ListaLeitura.Api.Controllers
         }
 
         [HttpGet("{id}")]
+        [ProducesResponseType(statusCode: 200, Type = typeof(LivroApi))]
+        [ProducesResponseType(statusCode: 500, Type = typeof(ErrorResponse))]
+        [ProducesResponseType(statusCode: 404)]
         public IActionResult Recuperar(int id)
         {
             var model = _repo.Find(id);
@@ -70,7 +74,7 @@ namespace Alura.ListaLeitura.Api.Controllers
                 var uri = Url.Action("Recuperar", new { id = livro.Id });
                 return Created(uri, livro); //201
             }
-            return BadRequest(ErrorResponse.FromModelState(ModelState);
+            return BadRequest(ErrorResponse.FromModelState(ModelState));
         }
 
         [HttpPut]
