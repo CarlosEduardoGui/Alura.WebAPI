@@ -7,7 +7,7 @@ namespace Alura.ListaLeitura.Persistencia
     {
         public DbSet<Livro> Livros { get; set; }
 
-        public LeituraContext(DbContextOptions<LeituraContext> options) 
+        public LeituraContext(DbContextOptions<LeituraContext> options)
             : base(options)
         {
             //irá criar o banco e a estrutura de tabelas necessárias

@@ -1,37 +1,36 @@
-﻿using Alura.ListaLeitura.Persistencia;
+﻿using Alura.ListaLeitura.HttpClientes;
 using Alura.ListaLeitura.Modelos;
 using Alura.ListaLeitura.WebApp.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
-using System.Linq;
+using System.Threading.Tasks;
 
 namespace Alura.ListaLeitura.WebApp.Controllers
 {
     [Authorize]
     public class HomeController : Controller
     {
-        private readonly IRepository<Livro> _repo;
+        private readonly LivroApiClient _api;
 
-        public HomeController(IRepository<Livro> repository)
+        public HomeController(LivroApiClient api)
         {
-            _repo = repository;
+            _api = api;
         }
 
-        private IEnumerable<Livro> ListaDoTipo(TipoListaLeitura tipo)
+        private async Task<IEnumerable<LivroApi>> ListaDoTipo(TipoListaLeitura tipo)
         {
-            return _repo.All
-                .Where(l => l.Lista == tipo)
-                .ToList();
+            var lista = await _api.GetListaLeituraAsync(tipo);
+            return lista.Livros;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
             var model = new HomeViewModel
             {
-                ParaLer = ListaDoTipo(TipoListaLeitura.ParaLer),
-                Lendo = ListaDoTipo(TipoListaLeitura.Lendo),
-                Lidos = ListaDoTipo(TipoListaLeitura.Lidos)
+                ParaLer = await ListaDoTipo(TipoListaLeitura.ParaLer),
+                Lendo = await ListaDoTipo(TipoListaLeitura.Lendo),
+                Lidos = await ListaDoTipo(TipoListaLeitura.Lidos)
             };
             return View(model);
         }

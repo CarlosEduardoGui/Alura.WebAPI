@@ -2,7 +2,7 @@
 
 namespace Alura.ListaLeitura.Persistencia
 {
-    public class RepositorioBaseEF<TEntity>: IRepository<TEntity> where TEntity: class
+    public class RepositorioBaseEF<TEntity> : IRepository<TEntity> where TEntity : class
     {
         private readonly LeituraContext _context;
 

@@ -1,17 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Alura.ListaLeitura.Api.Formatters;
+﻿using Alura.ListaLeitura.Api.Formatters;
 using Alura.ListaLeitura.Modelos;
 using Alura.ListaLeitura.Persistencia;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using System;
 
 namespace Alura.WebAPI.Api
 {
@@ -26,13 +22,15 @@ namespace Alura.WebAPI.Api
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<LeituraContext>(options => {
+            services.AddDbContext<LeituraContext>(options =>
+            {
                 options.UseSqlServer(Configuration.GetConnectionString("ListaLeitura"));
             });
 
             services.AddTransient<IRepository<Livro>, RepositorioBaseEF<Livro>>();
 
-            services.AddMvc(options => {
+            services.AddMvc(options =>
+            {
                 options.OutputFormatters.Add(new LivroCsvFormatter());
             }).AddXmlSerializerFormatters();
 
@@ -40,7 +38,8 @@ namespace Alura.WebAPI.Api
             {
                 options.DefaultAuthenticateScheme = "JwtBearer";
                 options.DefaultChallengeScheme = "JwtBearer";
-            }).AddJwtBearer("JwtBearer", options => {
+            }).AddJwtBearer("JwtBearer", options =>
+            {
                 options.TokenValidationParameters = new TokenValidationParameters
                 {
                     ValidateIssuer = true,
