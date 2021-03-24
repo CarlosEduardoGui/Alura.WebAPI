@@ -6,15 +6,15 @@ using System.Linq;
 
 namespace Alura.ListaLeitura.Api.Controllers
 {
-    [Authorize]
     [ApiController]
+    [Authorize]
     [ApiVersion("2.0")]
     [Route("api/v{version:apiVersion}/[controller]")]
-    public class LivrosController : ControllerBase
+    public class Livros2Controller : ControllerBase
     {
         private readonly IRepository<Livro> _repo;
 
-        public LivrosController(IRepository<Livro> repository)
+        public Livros2Controller(IRepository<Livro> repository)
         {
             _repo = repository;
         }
@@ -34,7 +34,7 @@ namespace Alura.ListaLeitura.Api.Controllers
             {
                 return NotFound();
             }
-            return Ok(model.ToApi());
+            return Ok(model);
         }
 
         [HttpGet("{id}/capa")]
