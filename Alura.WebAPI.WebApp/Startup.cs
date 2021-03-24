@@ -2,6 +2,7 @@
 using Alura.ListaLeitura.Modelos;
 using Alura.ListaLeitura.Seguranca;
 using Alura.WebAPI.WebApp.Formatters;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -28,22 +29,30 @@ namespace Alura.ListaLeitura.WebApp
                 options.UseSqlServer(Configuration.GetConnectionString("AuthDB"));
             });
 
-            services.AddIdentity<Usuario, IdentityRole>(options =>
-            {
-                options.Password.RequiredLength = 3;
-                options.Password.RequireNonAlphanumeric = false;
-                options.Password.RequireUppercase = false;
-                options.Password.RequireLowercase = false;
-            }).AddEntityFrameworkStores<AuthDbContext>();
+            //services.AddIdentity<Usuario, IdentityRole>(options =>
+            //{
+            //    options.Password.RequiredLength = 3;
+            //    options.Password.RequireNonAlphanumeric = false;
+            //    options.Password.RequireUppercase = false;
+            //    options.Password.RequireLowercase = false;
+            //}).AddEntityFrameworkStores<AuthDbContext>();
+
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie(options =>
+                {
+                    options.LoginPath = "/Usuario/Login";
+                });
+
+            services.AddHttpContextAccessor();
 
             services.AddHttpClient<LivroApiClient>(client =>
             {
                 client.BaseAddress = new Uri("http://localhost:6000/api/");
             });
 
-            services.ConfigureApplicationCookie(options =>
+            services.AddHttpClient<AuthApiClient>(client =>
             {
-                options.LoginPath = "/Usuario/Login";
+                client.BaseAddress = new Uri("http://localhost:5000/api/");
             });
 
             services.AddMvc(options =>
